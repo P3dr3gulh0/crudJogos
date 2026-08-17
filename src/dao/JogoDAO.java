@@ -70,4 +70,24 @@ public class JogoDAO {
         return jogoArray;
 
     }
+    
+    public void deletar(JogoModel jogo) {
+        String sql = "DELETE FROM jogo WHERE idJogo = ?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ps.setInt(1, jogo.getIdJogo());
+
+            ps.execute();
+
+            JOptionPane.showMessageDialog(null, "Exclusão DAO concluída!");
+
+            ps.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Exclusão DAO não concluida!");
+
+            throw new RuntimeException(e);
+        }
+    }
 }

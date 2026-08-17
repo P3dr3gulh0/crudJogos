@@ -23,6 +23,7 @@ public class JogoView extends javax.swing.JFrame {
      */
     public JogoView() {
         initComponents();
+        leiaTable();
     }
     private Connection connection;
 
@@ -282,7 +283,21 @@ public class JogoView extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        if (JtLista.getSelectedRow() != -1) {
+            JogoModel u = new JogoModel();
+            u.setIdJogo((int) JtLista.getValueAt(JtLista.getSelectedRow(), 0));
+
+            JogoDAO dao = new JogoDAO(connection);
+            dao.deletar(u);
+
+            JOptionPane.showMessageDialog(null, "Jogo deletado com sucesso");
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione um Usuario para excluir");
+
+        }
+        limpar();
+        leiaTable();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
