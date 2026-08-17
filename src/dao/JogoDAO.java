@@ -90,4 +90,26 @@ public class JogoDAO {
             throw new RuntimeException(e);
         }
     }
+    
+    public void editar(JogoModel jogo) {
+        String sql = "UPDATE jogo SET nome = ?, plataforma = ?, preco = ? WHERE idJogo = ?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ps.setString(1, jogo.getNome());
+            ps.setString(2, jogo.getPlataforma());
+            ps.setDouble(3, jogo.getPreco());
+            ps.setInt(4, jogo.getIdJogo());
+
+            ps.execute();
+            ps.close();
+            JOptionPane.showMessageDialog(null, "Edição do Jogo concluida");
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar! Classe DAO");
+            throw new RuntimeException(e);
+        }
+
+    }
 }
