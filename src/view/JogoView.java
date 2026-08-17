@@ -4,6 +4,12 @@
  */
 package view;
 
+import dao.JogoDAO;
+import java.sql.Connection;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.JogoModel;
+
 /**
  *
  * @author 1017729
@@ -18,11 +24,30 @@ public class JogoView extends javax.swing.JFrame {
     public JogoView() {
         initComponents();
     }
+    private Connection connection;
 
     public void limpar() {
         txfNome.setText("");
         txfPlataforma.setText("");
         txfPreco.setText("");
+    }
+
+    public void leiaTable() {
+
+        DefaultTableModel modelo = (DefaultTableModel) JtLista.getModel();
+        modelo.setNumRows(0);
+
+        JogoDAO dao = new JogoDAO(connection);
+
+        for (JogoModel jogoM : dao.leitura()) {
+            modelo.addRow(new Object[]{
+                jogoM.getIdJogo(),
+                jogoM.getNome(),
+                jogoM.getPlataforma(),
+                jogoM.getPreco(),
+            });
+        }
+
     }
 
     /**
@@ -89,6 +114,7 @@ public class JogoView extends javax.swing.JFrame {
         txfNome.addActionListener(this::txfNomeActionPerformed);
 
         jButton1.setText("Cadastrar");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
 
         jButton2.setText("Atualizar");
         jButton2.addActionListener(this::jButton2ActionPerformed);
@@ -159,20 +185,20 @@ public class JogoView extends javax.swing.JFrame {
 
         JtLista.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Nome", "Plataforma", "Preço"
+                "Id", "Nome", "Plataforma", "Preço"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -186,7 +212,9 @@ public class JogoView extends javax.swing.JFrame {
         jScrollPane1.setViewportView(JtLista);
         if (JtLista.getColumnModel().getColumnCount() > 0) {
             JtLista.getColumnModel().getColumn(0).setResizable(false);
+            JtLista.getColumnModel().getColumn(1).setResizable(false);
             JtLista.getColumnModel().getColumn(2).setResizable(false);
+            JtLista.getColumnModel().getColumn(3).setResizable(false);
         }
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -260,6 +288,28 @@ public class JogoView extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         limpar();
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JogoModel u = new JogoModel();
+
+        try {
+            u.setNome(txfNome.getText());
+            u.setPlataforma(txfPlataforma.getText());
+            u.setPreco(Double.parseDouble(txfPreco.getText())
+            );
+
+            JogoDAO dao = new JogoDAO(connection);
+            dao.adicionar(u);
+
+            JOptionPane.showMessageDialog(null, "Usuário " + txfNome.getText() + " cadastrado com sucesso!");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Não deu boa");
+        }
+
+        leiaTable();
+        limpar();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
