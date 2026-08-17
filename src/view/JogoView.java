@@ -46,8 +46,7 @@ public class JogoView extends javax.swing.JFrame {
                 jogoM.getIdJogo(),
                 jogoM.getNome(),
                 jogoM.getPlataforma(),
-                jogoM.getPreco(),
-            });
+                jogoM.getPreco(),});
         }
 
     }
@@ -127,6 +126,7 @@ public class JogoView extends javax.swing.JFrame {
         jButton3.addActionListener(this::jButton3ActionPerformed);
 
         jButton4.setText("Sair");
+        jButton4.addActionListener(this::jButton4ActionPerformed);
 
         jButton5.setText("Limpar");
         jButton5.addActionListener(this::jButton5ActionPerformed);
@@ -315,9 +315,8 @@ public class JogoView extends javax.swing.JFrame {
             u.setPlataforma(txfPlataforma.getText());
             u.setPreco(Double.parseDouble(txfPreco.getText()));
 
-
             u.setIdJogo((int) JtLista.getValueAt(JtLista.getSelectedRow(), 0));
-            
+
             JogoDAO dao = new JogoDAO(connection);
             dao.editar(u);
 
@@ -373,7 +372,7 @@ public class JogoView extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void JtListaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtListaMouseClicked
-                if (JtLista.getSelectedRow() != -1) {
+        if (JtLista.getSelectedRow() != -1) {
 
             txfId.setText(JtLista.getValueAt(JtLista.getSelectedRow(), 0).toString());
             txfNome.setText(JtLista.getValueAt(JtLista.getSelectedRow(), 1).toString());
@@ -382,6 +381,11 @@ public class JogoView extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_JtListaMouseClicked
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        JOptionPane.showMessageDialog(null, "Obrigado pelo acesso!");
+        System.exit(0);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
